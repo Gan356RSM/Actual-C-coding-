@@ -10,23 +10,43 @@ string turn = " o ";
 bool win = false;   
 
 while (win == false) {
-
     Console.WriteLine("Enter Coordinates Y (0 --> 6):");
     int y = Convert.ToInt32(Console.ReadLine());
 
+    bool validPos = false;
+    while (validPos == false) {
+        
+        if (y > 6 || y < 0) {
+            Console.WriteLine("Overflowed position, please try again ");
+            Console.WriteLine("Enter Coordinates Y (0 --> 6):");
+            y = Convert.ToInt32(Console.ReadLine());
+        } else {
+            validPos = true;
+        }
+    }
+
     Console.WriteLine("-----------------------------------------------------");
 
-    bool moveMade = false;
-    while (moveMade == false) {
-        int bottom = 5;
-        while (bottom >= 0) {
-            if (connect67[bottom, y] == " _ ") {
-                connect67[bottom, y] = turn; 
-                moveMade = true;
-                break;
-            }
-            bottom --;
+    string lastTurn = " o ";
+    int bottom = 5;
+    while (bottom > -1) {
+        if (connect67[bottom, y] == " _ ") {
+            connect67[bottom, y] = turn; 
+            lastTurn = turn;
+            break;
         }
+        bottom --;
+    }
+
+    if (turn == " 0 ") {
+        turn = " o "; 
+    } else if (turn == " o ") {
+        turn = " 0 ";
+    }
+
+    if (bottom < 0) {
+        Console.WriteLine("Overflowed position, please try again");
+        turn = lastTurn;
     }
 
     for (int i = 0; i < connect67.GetLength(0); i++) {
@@ -53,16 +73,4 @@ while (win == false) {
         }
         loopCount ++;
     }
-
-
-    if (turn == " 0 ") 
-    {
-        turn = " o "; 
-    }
-    else if (turn == " o ") 
-    {
-        turn = " 0 ";
-    }
-
 };
-
