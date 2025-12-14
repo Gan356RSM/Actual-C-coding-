@@ -2,9 +2,9 @@ string[,] connect67 = new string[6, 7] {
 { " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " }, 
 { " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
 { " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " }, };
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " o ", " o " },
+{ " _ ", " _ ", " _ ", " _ ", " o ", " o ", " o " },
+{ " _ ", " _ ", " _ ", " o ", " o ", " o ", " 0 " }, };
 
 string turn = " o ";
 bool win = false;   
@@ -112,25 +112,96 @@ while (win == false) {
         curRow --;
         curCol --;
     }
-    Console.WriteLine(curRow);
-    Console.WriteLine(curCol);
 
     int startRow = curRow;
     int startCol = curCol;
 
-    Console.WriteLine("--------------");
-
     while (true) {
-        if (curRow == 6 || curCol == 5) {
+        if (curRow == 5 || curCol == 6) {
             break;
         }
         curRow ++;
         curCol ++;
     }
 
-    Console.WriteLine(curRow);
-    Console.WriteLine(curCol);
-
     int endRow = curRow;
     int endCol = curCol;
-};
+
+    count0 = 0;
+    counto = 0;
+    loopCount = 0;
+
+    while (loopCount < (endCol - startCol) + 1) {
+        if (connect67[startRow + loopCount, startCol + loopCount] == " 0 ") {
+            count0 ++;
+            counto = 0;
+            if (count0 == 4) {
+                Console.WriteLine("0 win!");
+                win = true;
+            }
+        }
+        else if (connect67[startRow + loopCount, startCol + loopCount] == " o ") {
+            counto ++;
+            count0 = 0;
+            if (counto == 4) {
+                Console.WriteLine("o win!");
+                win = true;
+            }
+        }
+        loopCount ++; 
+    }
+
+    curRow = bottom;
+    curCol = y;
+
+    while (true) {
+        if (curRow == 0 || curCol == 6) {
+            break;
+        }
+        curRow --;
+        curCol ++;
+    }
+
+    startRow = curRow;
+    startCol = curCol;
+
+    while (true) {
+        if (curRow == 5 || curCol == 0) {
+            break;
+        }
+        curRow ++;
+        curCol --;
+    }
+
+    endRow = curRow;
+    endCol = curCol;
+
+    Console.WriteLine(startCol - endCol);
+
+    while (loopCount < (startCol - endCol) + 1) {
+        Console.WriteLine(connect67[startRow + loopCount, endCol + loopCount]);
+        Console.WriteLine(startRow + loopCount);
+        Console.WriteLine(endCol + loopCount);
+        if (connect67[startRow + loopCount, endCol + loopCount] == " 0 ") {
+            count0 ++;
+            counto = 0;
+            Console.WriteLine(count0);
+            Console.WriteLine(counto);
+            if (count0 == 4) {
+                Console.WriteLine("0 win!");
+                win = true;
+            }
+        }
+        else if (connect67[startRow + loopCount, endCol + loopCount] == " o ") {
+            counto ++;
+            count0 = 0;
+            Console.WriteLine(count0);
+            Console.WriteLine(counto);
+            if (counto == 4) {
+                Console.WriteLine("o win!");
+                win = true;
+            }
+        }
+        loopCount ++; 
+    }
+}
