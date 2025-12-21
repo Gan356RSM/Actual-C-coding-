@@ -1,0 +1,43 @@
+Random random = new Random();
+
+string[,] landmine = new string[8, 8] { 
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " }, 
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " }, };
+
+string[,] gameplay = new string[8, 8] { 
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " }, 
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
+{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " }, };
+
+// Make the grid
+// Randomize bomb position -- Bug fix: The bomb can't stack on each other
+// Generate the numbers between the bombs
+// Create a second grid to hide the numbers and the bombs
+// Allow the players to choose the position -- Bug fix: Make a bomb counter
+// Allow the players to put flag -- Bug fix: Input Flag or Not
+
+int counter = 0;
+while (counter < 10) {
+    int landmineCoordX = random.Next(8);
+    int landmineCoordY = random.Next(8);
+    if (landmine[landmineCoordX, landmineCoordY] != " @ ") {
+        landmine[landmineCoordX, landmineCoordY] = " @ ";
+        counter ++;
+    }
+}
+
+for (int i = 0; i < landmine.GetLength(0); i++) {
+    Console.WriteLine(landmine[i, 0] + landmine[i, 1] + landmine[i, 2] + landmine[i, 3] + landmine[i, 4] + landmine[i, 5] + landmine[i, 6] + landmine[i, 7]);
+}
+
