@@ -37,7 +37,59 @@ while (counter < 10) {
     }
 }
 
+for (int row = 0; row < landmine.GetLength(0); row++) {
+    for (int col = 0; col < landmine.GetLength(0); col++) {
+        if (landmine[col, row] == " @ ") {
+            continue;
+        }
+
+        int bombCount = 0;
+
+        if ((col - 1 >= 0 && row - 1 >= 0) && landmine[col - 1, row - 1] == " @ " ) {
+            bombCount ++;
+        }
+        if ((row - 1 >= 0) && landmine[col, row - 1] == " @ " ) {
+            bombCount ++;
+        }
+        if ((col + 1 <= 7 && row - 1 >= 0) && landmine[col + 1, row - 1] == " @ " ) {
+            bombCount ++;
+        }
+        if ((col - 1 >= 0) && landmine[col - 1, row] == " @ " ) {
+            bombCount ++;
+        }
+        if ((col + 1 <= 7) && landmine[col + 1, row] == " @ " ) {
+            bombCount ++;
+        }
+        if ((col - 1 >= 0 && row + 1 <= 7) && landmine[col - 1, row + 1] == " @ " ) {
+            bombCount ++;
+        }
+        if ((row + 1 <= 7) && landmine[col, row + 1] == " @ " ) {
+            bombCount ++;
+        }
+        if ((col + 1 <= 7 && row + 1 <= 7) && landmine[col + 1, row + 1] == " @ " ) {
+            bombCount ++;
+        }
+        Console.WriteLine(bombCount);
+        string bombNum = $" {bombCount} ";
+        landmine[col, row] = bombNum;
+    }
+}
+
 for (int i = 0; i < landmine.GetLength(0); i++) {
     Console.WriteLine(landmine[i, 0] + landmine[i, 1] + landmine[i, 2] + landmine[i, 3] + landmine[i, 4] + landmine[i, 5] + landmine[i, 6] + landmine[i, 7]);
 }
 
+bool win = false;   
+
+while (win == false) {
+    Console.WriteLine("Minesweeper: How to Play");
+    Console.WriteLine("Enter the Coordinates in this format: 1/3/F (X coords/Y coords/Flag or Not)");
+
+    Console.WriteLine("Enter Coordinates (0 --> 7):");
+    string userInfo = Console.ReadLine();
+    string[] coords = userInfo.Split('/'); 
+
+    Console.WriteLine(coords[0] + coords[1] + coords[2]);
+    Console.WriteLine("----------------------------------------------------------------------------");
+    
+}
