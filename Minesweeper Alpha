@@ -10,22 +10,31 @@ string[,] landmine = new string[8, 8] {
 { " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
 { " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " }, };
 
-string[,] gameplay = new string[8, 8] { 
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " }, 
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " },
-{ " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ ", " _ " }, };
+bool[,] gameplay = new bool[8, 8] { 
+{ true, true, true, true, true, true, true, true }, 
+{ true, true, true, true, true, true, true, true },
+{ true, true, true, true, true, true, true, true },
+{ true, true, true, true, true, true, true, true },
+{ true, true, true, true, true, true, true, true }, 
+{ true, true, true, true, true, true, true, true },
+{ true, true, true, true, true, true, true, true },
+{ true, true, true, true, true, true, true, true }, };
 
-// Make the grid
-// Randomize bomb position -- Bug fix: The bomb can't stack on each other
-// Generate the numbers between the bombs
-// Create a second grid to hide the numbers and the bombs
-// Allow the players to choose the position -- Bug fix: Make a bomb counter
-// Allow the players to put flag -- Bug fix: Input Flag or Not
+void flood(int row, int col)
+{   
+    if (landmine[col, row] == " 0 ") { 
+        gameplay[col - 1, row - 1] = false;
+        gameplay[col, row - 1] = false;
+        gameplay[col + 1, row - 1] = false;
+        gameplay[col - 1, row] = false;
+        gameplay[col, row] = false;
+        gameplay[col + 1, row] = false;
+        gameplay[col - 1, row + 1] = false;
+        gameplay[col, row + 1] = false;
+        gameplay[col + 1, row + 1] = false;
+        Console.WriteLine("Ran");
+    }
+}
 
 int counter = 0;
 while (counter < 10) {
@@ -69,7 +78,6 @@ for (int row = 0; row < landmine.GetLength(0); row++) {
         if ((col + 1 <= 7 && row + 1 <= 7) && landmine[col + 1, row + 1] == " @ " ) {
             bombCount ++;
         }
-        Console.WriteLine(bombCount);
         string bombNum = $" {bombCount} ";
         landmine[col, row] = bombNum;
     }
@@ -81,15 +89,31 @@ for (int i = 0; i < landmine.GetLength(0); i++) {
 
 bool win = false;   
 
+Console.WriteLine("Minesweeper: How to Play");
+Console.WriteLine("Enter the Coordinates in this format: 1/3/F or N (X coords/Y coords/Flag or Not)");
+
 while (win == false) {
-    Console.WriteLine("Minesweeper: How to Play");
-    Console.WriteLine("Enter the Coordinates in this format: 1/3/F (X coords/Y coords/Flag or Not)");
 
     Console.WriteLine("Enter Coordinates (0 --> 7):");
     string userInfo = Console.ReadLine();
     string[] coords = userInfo.Split('/'); 
 
-    Console.WriteLine(coords[0] + coords[1] + coords[2]);
     Console.WriteLine("----------------------------------------------------------------------------");
-    
+    int coordX = int.Parse(coords[0]);
+    int coordY = int.Parse(coords[1]);
+
+    flood(coordX, coordY);
+
+    for (int col = 0; col < landmine.GetLength(0); col++) {
+        string x = "";
+        for (int row = 0; row < landmine.GetLength(0); row++) {
+            if (gameplay[col, row] == true) {
+                x += " _ ";
+            } else {
+                x += landmine[col, row];
+            }
+            //Console.WriteLine(gameplay[i, 0] + gameplay[i, 1] + gameplay[i, 2] + gameplay[i, 3] + gameplay[i, 4] + gameplay[i, 5] + gameplay[i, 6] + gameplay[i, 7])  
+        }
+        Console.WriteLine(x);
+    }
 }
