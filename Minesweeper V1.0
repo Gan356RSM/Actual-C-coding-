@@ -20,24 +20,32 @@ bool[,] gameplay = new bool[8, 8] {
 { true, true, true, true, true, true, true, true },
 { true, true, true, true, true, true, true, true }, };
 
-void flood(int row, int col)
-{   
-    if (landmine[col, row] == " 0 ") { 
-        gameplay[col - 1, row - 1] = false;
-        gameplay[col, row - 1] = false;
-        gameplay[col + 1, row - 1] = false;
-        gameplay[col - 1, row] = false;
-        gameplay[col, row] = false;
-        gameplay[col + 1, row] = false;
-        gameplay[col - 1, row + 1] = false;
-        gameplay[col, row + 1] = false;
-        gameplay[col + 1, row + 1] = false;
-        Console.WriteLine("Ran");
+void flood(int col, int row) {   
+    if (landmine[col, row] == " 0 ") {
+        floodCheck(col - 1, row - 1);
+        floodCheck(col, row - 1);
+        floodCheck(col + 1, row - 1);
+        floodCheck(col - 1, row);
+        floodCheck(col + 1, row);
+        floodCheck(col - 1, row + 1);
+        floodCheck(col, row + 1);
+        floodCheck(col + 1, row + 1);
+    }
+}
+
+void floodCheck(int col, int row) {
+    if ((col >= 0 && row >= 0 && col <= 7 && row <= 7)) {
+        if (gameplay[col, row] != false) {
+            gameplay[col, row] = false;
+            if (landmine[col, row] == " 0 ") {
+                flood(col, row);
+            }
+        }
     }
 }
 
 int counter = 0;
-while (counter < 10) {
+while (counter < 8) {
     int landmineCoordX = random.Next(8);
     int landmineCoordY = random.Next(8);
     if (landmine[landmineCoordX, landmineCoordY] != " @ ") {
@@ -82,15 +90,15 @@ for (int row = 0; row < landmine.GetLength(0); row++) {
         landmine[col, row] = bombNum;
     }
 }
-
+/*
 for (int i = 0; i < landmine.GetLength(0); i++) {
     Console.WriteLine(landmine[i, 0] + landmine[i, 1] + landmine[i, 2] + landmine[i, 3] + landmine[i, 4] + landmine[i, 5] + landmine[i, 6] + landmine[i, 7]);
 }
-
+*/
 bool win = false;   
 
 Console.WriteLine("Minesweeper: How to Play");
-Console.WriteLine("Enter the Coordinates in this format: 1/3/F or N (X coords/Y coords/Flag or Not)");
+Console.WriteLine("Enter the Coordinates in this format: 1/3 (X coords/Y coords)");
 
 while (win == false) {
 
@@ -101,19 +109,45 @@ while (win == false) {
     Console.WriteLine("----------------------------------------------------------------------------");
     int coordX = int.Parse(coords[0]);
     int coordY = int.Parse(coords[1]);
+    gameplay[coordX, coordY] = false;
 
-    flood(coordX, coordY);
+    if (landmine[coordX, coordY] != " @ ") {
+        flood(coordX, coordY);
 
-    for (int col = 0; col < landmine.GetLength(0); col++) {
-        string x = "";
-        for (int row = 0; row < landmine.GetLength(0); row++) {
-            if (gameplay[col, row] == true) {
-                x += " _ ";
-            } else {
-                x += landmine[col, row];
+        for (int col = 0; col < landmine.GetLength(0); col++) {
+            string x = "";
+            for (int row = 0; row < landmine.GetLength(0); row++) {
+                if (gameplay[col, row] == true) {
+                    x += " _ ";
+                } else {
+                    x += landmine[col, row];
+                }
             }
-            //Console.WriteLine(gameplay[i, 0] + gameplay[i, 1] + gameplay[i, 2] + gameplay[i, 3] + gameplay[i, 4] + gameplay[i, 5] + gameplay[i, 6] + gameplay[i, 7])  
+            Console.WriteLine(x);
         }
-        Console.WriteLine(x);
+    } else {
+        break;
     }
+
+    {
+        int cells = 56;
+        for (int col = 0; col < landmine.GetLength(0); col++) {
+            for (int row = 0; row < landmine.GetLength(0); row++) {
+                if (gameplay[col, row] == false) {
+                    cells --;
+                }
+            }
+        }
+
+        if (cells == 0) {
+            win = true;
+            break;
+        }
+    }
+}
+
+if (win == false) {
+    Console.WriteLine("You Lost");
+} else {
+    Console.WriteLine("You Won");
 }
